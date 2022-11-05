@@ -47,6 +47,32 @@ class _MyAppState extends State<MyApp> {
                   Text("Read and Listen To Sentences Using the Word", style: TextStyle(fontSize: 15.0),),
                 ],
               ),
+
+              Row(
+                children:<Widget> [
+                  SizedBox(height: 70,),
+                  IconButton(
+                    icon: const Icon(Icons.menu),
+                    iconSize: 30,
+                    onPressed: () {
+                    },
+                  ),
+                  Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    iconSize: 30,
+                    onPressed: () {
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.more_vert),
+                    iconSize: 30,
+                    onPressed: () {
+                    },
+                  ),
+
+                ],
+              ),
               Flexible(
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
