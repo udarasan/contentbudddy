@@ -1,3 +1,5 @@
+import 'package:contentbudddy/helper/Db_helper.dart';
+import 'package:contentbudddy/model/Contacts.dart';
 import 'package:contentbudddy/screen/AddScreen.dart';
 import 'package:contentbudddy/screen/EditScreen.dart';
 import 'package:contentbudddy/screen/HomeScreen.dart';
@@ -5,6 +7,7 @@ import 'package:contentbudddy/screen/SplashScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     routes: <String, WidgetBuilder>{
       '/home': (context) => const HomeScreen(),
@@ -25,7 +28,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  var items = List<String>.generate(100, (index) => 'Item $index');
+  //var items = List<String>.generate(100, (index) => 'Item $index');
 
   @override
   Widget build(BuildContext context) {
@@ -96,24 +99,71 @@ class _MyAppState extends State<MyApp> {
               children: const [
                 SizedBox(
                   height: 30,
-                  child: (Text("Recently Added")),
+                  child:Padding (
+                      padding: EdgeInsets.only(left: 10),
+                      child:Text("Recently Added")),
                 )
               ],
+
             ),
+
             Flexible(
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: items.length,
-                    itemBuilder: (context, index)  {
-                     return ListTile(
-                       title: Text("Udara San"),
-                       subtitle: Text(items[index]),
-                     );
-                    },
-                )),
+              child: FutureBuilder<List<Contacts>>(
+                future: Db_helper.instance.getContacts(),
+                builder: (BuildContext context, AsyncSnapshot <List<Contacts>> snapshot){
+                  if(!snapshot.hasData){
+                    return const Center(child: Text('Loading...'));
+                  }
+                  return snapshot.data!.isEmpty
+                  ?const Center(child: Text('No Contacts In Yet..'))
+                  :ListView(
+
+                      shrinkWrap: true,
+                      children: snapshot.data!.map((contacts) {
+                        return Center(
+                          child: ListTile(
+                            leading: const CircleAvatar(backgroundImage: NetworkImage(
+                                'https://avatars0.githubusercontent.com/u/28812093?s=460&u=06471c90e03cfd8ce2855d217d157c93060da490&v=4'),),
+                            subtitle: Text(contacts.number),
+                            title: Text(contacts.name),
+                            onTap: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => EditScreen()),
+                              );
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    );
+              }
+              ),
+            )
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton (
+
+        onPressed: (){
+          onTapFunction(context);
+        },
+
+        backgroundColor: Colors.cyan,
+        child: const Icon(Icons.add),
+      ),
     );
   }
+
+  onTapFunction(BuildContext context) async {
+    final reLoadPage = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddScreen()),
+    );
+
+    if (reLoadPage) {
+      setState(() {});
+    }
+  }
+
+
 }
