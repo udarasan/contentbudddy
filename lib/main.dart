@@ -5,13 +5,13 @@ import 'package:contentbudddy/screen/EditScreen.dart';
 import 'package:contentbudddy/screen/HomeScreen.dart';
 import 'package:contentbudddy/screen/SplashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     routes: <String, WidgetBuilder>{
       '/home': (context) => const HomeScreen(),
-      '/edit':(context) => const EditScreen(),
       '/add':(context) => const AddScreen(),
       '/splash':(context) => const SplashScreen(),
     },
@@ -122,15 +122,23 @@ class _MyAppState extends State<MyApp> {
                       children: snapshot.data!.map((contacts) {
                         return Center(
                           child: ListTile(
-                            leading: const CircleAvatar(backgroundImage: NetworkImage(
-                                'https://avatars0.githubusercontent.com/u/28812093?s=460&u=06471c90e03cfd8ce2855d217d157c93060da490&v=4'),),
+                            leading: ProfilePicture(
+                              name: contacts.name,
+                              radius: 31,
+                              fontsize: 21,
+                            ),
                             subtitle: Text(contacts.number),
                             title: Text(contacts.name),
+                            onLongPress: (){
+                             onTapDeleteFunction(contacts.id!);
+                            },
                             onTap: (){
+                              //onTapUpdateFunction(context,contacts.id,contacts.name,contacts.number,contacts.email);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => EditScreen()),
+                                MaterialPageRoute(builder: (context) => EditScreen(contacts.id,contacts.name,contacts.number,contacts.email)),
                               );
+
                             },
                           ),
                         );
@@ -164,6 +172,24 @@ class _MyAppState extends State<MyApp> {
       setState(() {});
     }
   }
+
+  onTapDeleteFunction(int id) async {
+     await Db_helper.instance.delete(id);
+      setState(() {});
+
+  }
+ /* onTapUpdateFunction(BuildContext context,int ?id,String name,String number,String ?email) async {
+    final reLoadPage = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditScreen(id,name,number,email)),
+    );
+
+    if (reLoadPage) {
+      setState(() {});
+    }
+  }*/
+
+ 
 
 
 }

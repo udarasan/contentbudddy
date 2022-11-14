@@ -48,11 +48,12 @@ class Db_helper{
   }
   Future<int> delete(int id) async {
     Database db = await instance.database;
-    return await db.delete('contacts');
+    return await db.delete('contacts',where: "id = ?", whereArgs: [id]);
   }
   Future<int> update(Contacts contacts) async {
     Database db = await instance.database;
-    return await db.update('contacts', contacts.toMap());
+    return await db.update('contacts', contacts.toMap(),
+        where: "id = ?", whereArgs: [contacts.id]);
   }
 
 }

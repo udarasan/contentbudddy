@@ -4,7 +4,13 @@ import 'package:contentbudddy/model/Contacts.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 class EditScreen extends StatefulWidget {
-  const EditScreen({Key? key}) : super(key: key);
+
+  const EditScreen(this.id,this.name,this.number,this.email,{Key? key, }) : super(key: key);
+
+  final int ?id;
+  final String name;
+  final String number;
+  final String ?email;
 
   @override
   State<EditScreen> createState() => _EditScreenState();
@@ -12,15 +18,15 @@ class EditScreen extends StatefulWidget {
 
 class _EditScreenState extends State<EditScreen> {
 
-  final name = TextEditingController();
-  final number = TextEditingController();
-  final email = TextEditingController();
+
+  final name1 = TextEditingController();
+  final number1 = TextEditingController();
+  final email1 = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
         body: Container(
             padding: const EdgeInsets.only(top: 70.0,left: 20.0,right: 30.0,bottom: 10.0),
             child: Column(
@@ -32,41 +38,41 @@ class _EditScreenState extends State<EditScreen> {
                   fontsize: 21,
                 ),
                 TextFormField(
-                  controller: name,
+                  initialValue: widget.name,
                   cursorColor: Colors.teal,
                   maxLength: 20,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.person),
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.person),
                     labelText: 'Contact Name',
                     helperText: 'Contact Name',
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.check_circle,
                     ),
                   ),
                 ),
                 TextFormField(
-                  controller: number,
+                  initialValue: widget.number,
                   cursorColor: Colors.teal,
                   maxLength: 20,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.phone),
+                  decoration: InputDecoration(
+                    icon: const Icon(Icons.phone),
                     labelText: 'Contact Number',
                     helperText: 'Contact Number',
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.check_circle,
                     ),
                   ),
                 ),
                 TextFormField(
-                  controller: email,
+                  initialValue: widget.email,
                   cursorColor: Colors.teal,
                   maxLength: 20,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.email),
+                  decoration:  InputDecoration(
+                    icon: const Icon(Icons.email),
                     labelText: 'Contact Email',
                     helperText: 'Contact Email',
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.check_circle,
                     ),
                   ),
@@ -76,16 +82,17 @@ class _EditScreenState extends State<EditScreen> {
                   onPressed: () async {
                     await Db_helper.instance.update(
                         Contacts(
-                            name: name.text,
-                            number: number.text,
-                            email: email.text
+                            id: widget.id,
+                            name: widget.name,
+                            number: widget.number,
+                            email: widget.email
                         )
                     );
                     setState(() {
 
-                      name.clear();
-                      number.clear();
-                      email.clear();
+                      name1.clear();
+                      number1.clear();
+                      email1.clear();
 
                       Navigator.pop(context, true);
                     });
