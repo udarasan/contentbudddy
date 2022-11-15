@@ -4,6 +4,7 @@ import 'package:contentbudddy/screen/AddScreen.dart';
 import 'package:contentbudddy/screen/EditScreen.dart';
 import 'package:contentbudddy/screen/HomeScreen.dart';
 import 'package:contentbudddy/screen/SplashScreen.dart';
+import 'package:contentbudddy/screen/UpdateScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
@@ -133,11 +134,11 @@ class _MyAppState extends State<MyApp> {
                              onTapDeleteFunction(contacts.id!);
                             },
                             onTap: (){
-                              //onTapUpdateFunction(context,contacts.id,contacts.name,contacts.number,contacts.email);
-                              Navigator.push(
+                              onTapUpdateFunction(context,contacts.id,contacts.name,contacts.number,contacts.email);
+                              /*Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => EditScreen(contacts.id,contacts.name,contacts.number,contacts.email)),
-                              );
+                                MaterialPageRoute(builder: (context) => UpdateScreen(contacts.id,contacts.name,contacts.number,contacts.email)),
+                              );*/
 
                             },
                           ),
@@ -178,16 +179,16 @@ class _MyAppState extends State<MyApp> {
       setState(() {});
 
   }
- /* onTapUpdateFunction(BuildContext context,int ?id,String name,String number,String ?email) async {
+onTapUpdateFunction(BuildContext context,int ?id,String name,String number,String ?email) async {
     final reLoadPage = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => EditScreen(id,name,number,email)),
+      MaterialPageRoute(builder: (context) => UpdateScreen(id,name,number,email)),
     );
 
     if (reLoadPage) {
       setState(() {});
     }
-  }*/
+  }
 
  
 

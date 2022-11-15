@@ -1,33 +1,25 @@
+import 'package:contentbudddy/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:contentbudddy/helper/Db_helper.dart';
 import 'package:contentbudddy/model/Contacts.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
-class EditScreen extends StatefulWidget {
-
-  const EditScreen(this.id,this.name,this.number,this.email,{Key? key, }) : super(key: key);
+class UpdateScreen extends StatelessWidget {
+  const UpdateScreen(this.id,this.name,this.number,this.email,{Key? key}) : super(key: key);
 
   final int ?id;
   final String name;
   final String number;
   final String ?email;
 
-
-  @override
-  State<EditScreen> createState() => _EditScreenState();
-}
-
-class _EditScreenState extends State<EditScreen> {
-
-
-
-  final name1 = TextEditingController(text:"EditScreen.name");
-  final number1 = TextEditingController(text: "er");
-  final email1 = TextEditingController(text: "dsds");
-
-
   @override
   Widget build(BuildContext context) {
+
+    final name1 = TextEditingController(text:name);
+    final number1 = TextEditingController(text: number);
+    final email1 = TextEditingController(text: email);
+
     return Scaffold(
         body: Container(
             padding: const EdgeInsets.only(top: 70.0,left: 20.0,right: 30.0,bottom: 10.0),
@@ -87,20 +79,21 @@ class _EditScreenState extends State<EditScreen> {
                   onPressed: () async {
                     await Db_helper.instance.update(
                         Contacts(
-                            id: widget.id,
+                            id: id,
                             name: name1.text,
                             number: number1.text,
                             email: email1.text
                         )
                     );
-                    setState(() {
+
 
                       name1.clear();
                       number1.clear();
                       email1.clear();
 
                       Navigator.pop(context, true);
-                    });
+
+
                   },
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.all(12),
@@ -117,4 +110,3 @@ class _EditScreenState extends State<EditScreen> {
     );
   }
 }
-
