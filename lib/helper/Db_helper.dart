@@ -29,7 +29,8 @@ class Db_helper{
       id INTEGER PRIMARY KEY,
       name TEXT,
       number TEXT,
-      email TEXT
+      email TEXT,
+      imgPath TEXT
     )
     ''');
   }

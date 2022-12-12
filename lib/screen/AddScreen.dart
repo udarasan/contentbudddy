@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:contentbudddy/helper/Db_helper.dart';
 import 'package:contentbudddy/model/Contacts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
-
+import 'package:image_picker/image_picker.dart';
 
 class AddScreen extends StatefulWidget {
   const AddScreen({Key? key}) : super(key: key);
@@ -15,21 +17,38 @@ class _AddScreenState extends State<AddScreen> {
   final name = TextEditingController();
   final number = TextEditingController();
   final email = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
+
+
+  get child => null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
-      body: Container(
-        padding: const EdgeInsets.only(top: 70.0,left: 20.0,right: 30.0,bottom: 10.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(top: 70.0,left: 20.0,right: 20.0,bottom: 10.0),
         child: Column(
           children: [
-          const ProfilePicture(
-            tooltip: true,
-          name: 'Dees',
-          radius: 31,
-          fontsize: 21,
-        ),
+            ClipOval(
+              child: SizedBox.fromSize(
+                size: Size.fromRadius(50), // Image radius
+                child:_image != null
+                    ? Image.file(
+                  _image!,
+                  fit: BoxFit.cover,
+                ) : Container(
+                  color: Colors.grey[300],
+                ),
+              ),
+            )
+            ,
+            TextButton(
+                onPressed: (){
+                  _onImageButtonPressed();
+                },
+                child: Text("Upload Image")
+            ),
+
             TextFormField(
               controller: name,
               cursorColor: Colors.teal,
@@ -77,7 +96,8 @@ class _AddScreenState extends State<AddScreen> {
                     Contacts(
                       name: name.text,
                       number: number.text,
-                      email: email.text
+                      email: email.text,
+                      imgPath: _image?.path,
                     )
                   );
                   setState(() {
@@ -121,5 +141,15 @@ class _AddScreenState extends State<AddScreen> {
     );
   }
 
+  Future _onImageButtonPressed()async{
+
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    print('---------------------------');
+    print(image?.path);
+    setState(() {
+      _image = File(image!.path); // won't have any error now
+    });
+    print('---------------------------');
+  }
 }
 
