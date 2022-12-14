@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:contentbudddy/helper/Db_helper.dart';
 import 'package:contentbudddy/model/Contacts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -19,7 +21,8 @@ class _AddScreenState extends State<AddScreen> {
   final email = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _image;
-
+  late String imageBase64;
+  late String  imagetemPath;
 
   get child => null;
   @override
@@ -97,7 +100,7 @@ class _AddScreenState extends State<AddScreen> {
                       name: name.text,
                       number: number.text,
                       email: email.text,
-                      imgPath: _image?.path,
+                      imgPath: imagetemPath,
                     )
                   );
                   setState(() {
@@ -146,10 +149,21 @@ class _AddScreenState extends State<AddScreen> {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     print('---------------------------');
     print(image?.path);
+    Uint8List imageByte= await image!.readAsBytes();
+
+    //imagetemPath=File(image.path);
+
     setState(() {
-      _image = File(image!.path); // won't have any error now
+      imageBase64=base64.encode(imageByte);
+      this.imagetemPath=image.path;
+      //_image =imagetemPath;
+      //_image = File(image!.path); // won't have any error now
     });
     print('---------------------------');
+    print(imageBase64);
+    print('---------------------------');
+    print(imagetemPath);
+
   }
 }
 

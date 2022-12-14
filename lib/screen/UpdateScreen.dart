@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:contentbudddy/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +8,13 @@ import 'package:contentbudddy/model/Contacts.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 class UpdateScreen extends StatelessWidget {
-  const UpdateScreen(this.id,this.name,this.number,this.email,{Key? key}) : super(key: key);
+  const UpdateScreen(this.id,this.name,this.number,this.email,this.imagePath,{Key? key}) : super(key: key);
 
   final int ?id;
   final String name;
   final String number;
   final String ?email;
-
+  final String imagePath;
   @override
   Widget build(BuildContext context) {
 
@@ -25,11 +27,10 @@ class UpdateScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 70.0,left: 20.0,right: 30.0,bottom: 10.0),
             child: Column(
               children: [
-                const ProfilePicture(
-                  tooltip: true,
-                  name: 'Dees',
-                  radius: 31,
-                  fontsize: 21,
+                Container(
+                  child: ClipOval(
+                      child:Image.file(File(imagePath),fit: BoxFit.cover,width: 90,height: 90,)
+                  ),
                 ),
                 TextFormField(
                   controller: name1,
@@ -82,17 +83,15 @@ class UpdateScreen extends StatelessWidget {
                             id: id,
                             name: name1.text,
                             number: number1.text,
-                            email: email1.text
+                            email: email1.text,
+                            imgPath:imagePath
                         )
                     );
-
 
                       name1.clear();
                       number1.clear();
                       email1.clear();
-
                       Navigator.pop(context, true);
-
 
                   },
                   style: TextButton.styleFrom(
