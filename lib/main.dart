@@ -4,7 +4,7 @@ import 'package:contentbudddy/helper/Db_helper.dart';
 import 'package:contentbudddy/model/Contacts.dart';
 import 'package:contentbudddy/screen/AddScreen.dart';
 import 'package:contentbudddy/screen/HomeScreen.dart';
-import 'package:contentbudddy/screen/SplashScreen.dart';
+import 'package:contentbudddy/screen/SerachScreen.dart';
 import 'package:contentbudddy/screen/UpdateScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ void main() {
     routes: <String, WidgetBuilder>{
       '/home': (context) => const HomeScreen(),
       '/add':(context) => const AddScreen(),
-      '/splash':(context) => const SplashScreen(),
+      '/search':(context) => const SearchScreen(),
     },
     home: MyApp(),
   ));
@@ -28,9 +28,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   //var items = List<String>.generate(100, (index) => 'Item $index');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,12 +85,16 @@ class _MyAppState extends State<MyApp> {
                 IconButton(
                   icon: const Icon(Icons.search),
                   iconSize: 30,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/search');
+                  },
                 ),
                 IconButton(
                   icon: const Icon(Icons.more_vert),
                   iconSize: 30,
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                 ),
               ],
             ),
@@ -103,7 +105,7 @@ class _MyAppState extends State<MyApp> {
                   child:Padding (
                       padding: EdgeInsets.only(left: 10),
                       child:Text("Recently Added")),
-                )
+                ),
               ],
             ),
 
@@ -185,8 +187,11 @@ onTapUpdateFunction(BuildContext context,int ?id,String name,String number,Strin
       setState(() {});
     }
   }
+}
 
- 
-
-
+onTapSearchIcon(BuildContext context) async {
+  await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SearchScreen()),
+  );
 }

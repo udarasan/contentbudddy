@@ -5,7 +5,6 @@ import 'package:contentbudddy/helper/Db_helper.dart';
 import 'package:contentbudddy/model/Contacts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddScreen extends StatefulWidget {
@@ -156,8 +155,10 @@ class _AddScreenState extends State<AddScreen> {
     setState(() {
       imageBase64=base64.encode(imageByte);
       this.imagetemPath=image.path;
+
       //_image =imagetemPath;
-      //_image = File(image!.path); // won't have any error now
+      _image = File(image!.path);
+
     });
     print('---------------------------');
     print(imageBase64);

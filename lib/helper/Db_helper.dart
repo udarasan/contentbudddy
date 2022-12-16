@@ -56,5 +56,13 @@ class Db_helper{
     return await db.update('contacts', contacts.toMap(),
         where: "id = ?", whereArgs: [contacts.id]);
   }
+  Future<List<Contacts>> getContactsByName(String name) async{
+    Database db =await instance.database;
+    var contacts = await db.rawQuery(("SELECT * FROM contacts WHERE name LIKE '%$name%'"));
+    List<Contacts> contactList = contacts.isNotEmpty
+        ? contacts.map((c) => Contacts.fromMap(c)).toList()
+        : [];
+    return contactList;
+  }
 
 }
